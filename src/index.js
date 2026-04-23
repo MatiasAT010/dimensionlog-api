@@ -15,13 +15,25 @@ app.use((req, res) => {
   res.status(404).json({ error: 'Not found' });
 });
 
-initDb().then(() => {
-  app.listen(PORT, () => {
-    console.log(`API corriendo en http://localhost:${PORT}`);
-    console.log(`  GET /api/character`);
-    console.log(`  GET /api/character/:id`);
-  });
-}).catch(err => {
-  console.error('Error conectando a la base de datos:', err.message);
+async function start() {
+  let retries = 5;
+  while (retries > 0) {
+    try {
+      await initDb();
+      app.listen(PORT, () => {
+        console.log(`API corriendo en http://localhost:${PORT}`);
+        console.log(`  GET /api/character`);
+        console.log(`  GET /api/character/:id`);
+      });
+      return;
+    } catch (err) {
+      retries--;
+      console.log(`Base de datos no lista, reintentando en 3s... (${retries} intentos restantes)`);
+      await new Promise(res => setTimeout(res, 3000));
+    }
+  }
+  console.error('No se pudo conectar a la base de datos');
   process.exit(1);
-});
+}
+
+start();
