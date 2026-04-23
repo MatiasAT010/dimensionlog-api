@@ -1,6 +1,7 @@
+# Juanse pro
 # dimensionlog-api
 
-API de Rick y Morty con 10 personajes.
+API de Rick y Morty con 10 personajes :)
 
 ## Ejecutar
 

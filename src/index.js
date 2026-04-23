@@ -16,7 +16,7 @@ app.use((req, res) => {
 });
 
 async function start() {
-  let retries = 5;
+  let retries = 10;
   while (retries > 0) {
     try {
       await initDb();
@@ -28,8 +28,8 @@ async function start() {
       return;
     } catch (err) {
       retries--;
-      console.log(`Base de datos no lista, reintentando en 3s... (${retries} intentos restantes)`);
-      await new Promise(res => setTimeout(res, 3000));
+      console.log(`Base de datos no lista, reintentando en 5s... (${retries} intentos restantes)`);
+      await new Promise(res => setTimeout(res, 5000));
     }
   }
   console.error('No se pudo conectar a la base de datos');
